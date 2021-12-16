@@ -2,16 +2,20 @@ import mysql.connector
 import smtplib, ssl
 from messege import booking_message as message
 
+# Your email and password. The password should be 2-step verification
+# and 'App password' in google account, if necessary
 sender = 'shrzdsfrv@gmail.com'
 password = 'wprjkdqdgmsirmhl'
-#
+
+
+# Client's input: name, email
 user_name = input(str('Type your name: '))
 receiver = input(str('Type your e-mail: '))
 
-context = ssl.create_default_context()
+context = ssl.create_default_context()  # Email ssl setting
 
 
-def email_sender():
+def email_sender(): # Function for email sending
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
         server.ehlo()
         server.login(sender, password)
@@ -19,13 +23,14 @@ def email_sender():
         server.quit()
 
 
-mydb = mysql.connector.connect(
+mydb = mysql.connector.connect(  # Mysql connection
     host="localhost",
     user="root",
     password="6283307sh",
     database="office"
 )
 
+# Database queries to identify available room in day of the week
 mycursor = mydb.cursor()
 mycursor.execute("""SELECT rooms 
                  FROM room_days 
@@ -71,7 +76,7 @@ mycursor.execute("""SELECT rooms
 available_sunday = mycursor.fetchall()
 
 
-def update_db(key1, key2):
+def update_db(key1, key2):  # Database updater for rooms
     mycursor.execute(f"""UPDATE room_days
                         SET {key1} = 1
                         WHERE room_id = {key2};""")
@@ -79,7 +84,7 @@ def update_db(key1, key2):
     mydb.commit()
 
 
-def update_user_db(key1, key2, key3):
+def update_user_db(key1, key2, key3):  # Database updater for clients
     mycursor.execute(f"""UPDATE customers
                          SET {key1} = '{key3}'
                          WHERE room_id = {key2}
@@ -87,9 +92,7 @@ def update_user_db(key1, key2, key3):
     mydb.commit()
 
 
-# ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-
-def main():
+def main():  # Main func and logic
     print('')
     print('     -----DAYS-----')
     print('')
