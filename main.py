@@ -2,10 +2,10 @@ import mysql.connector
 import smtplib, ssl
 from messege import booking_message as message
 
-# Your email and password. The password should be 2-step verification
+# Your email and password. The password should be 2-step verified in google account
 # and 'App password' in google account, if necessary
-sender = 'shrzdsfrv@gmail.com'
-password = 'wprjkdqdgmsirmhl'
+sender = 'your@gmail.com'
+password = 'your_password'
 
 
 # Client's input: name, email
